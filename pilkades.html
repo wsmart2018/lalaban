@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dashboard Jadwal Pilkades Jawa Barat</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Figtree:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#EDF1EE;--surf:#F8FAF8;--ink:#12302F;--mut:#576C69;--line:#CBD6D2;--c25:#5B6C8F;--c26:#1F9E89;--c27:#E3A02F;--c28:#C8553D;--c0:#CDD6D3;--acc:#12302F;--on:#F8FAF8;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E1B1B;--surf:#152727;--ink:#E4EEEA;--mut:#93A9A5;--line:#274040;--c25:#8EA0C6;--c26:#3CC2AA;--c27:#F0B84F;--c28:#E5785F;--c0:#2B4140;--acc:#E4EEEA;--on:#0E1B1B}}
+:root[data-theme="dark"]{--bg:#0E1B1B;--surf:#152727;--ink:#E4EEEA;--mut:#93A9A5;--line:#274040;--c25:#8EA0C6;--c26:#3CC2AA;--c27:#F0B84F;--c28:#E5785F;--c0:#2B4140;--acc:#E4EEEA;--on:#0E1B1B}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.55 Figtree,system-ui,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:28px clamp(16px,4vw,40px) 56px}
+h1,h2,.big{font-family:"Bricolage Grotesque",Figtree,system-ui,sans-serif;letter-spacing:-.02em}
+h1{font-size:clamp(30px,5.2vw,56px);line-height:1.02;margin:0 0 12px;font-weight:800;max-width:15ch}
+h2{font-size:22px;margin:0 0 4px;font-weight:700}
+.sub{color:var(--mut);margin:0;max-width:62ch}
+.kpis{display:flex;flex-wrap:wrap;gap:8px 44px;margin:26px 0 14px;padding:16px 0;border-block:1px solid var(--line)}
+.kpi .big{font-size:clamp(28px,4vw,40px);font-weight:800;line-height:1}
+.kpi span{color:var(--mut);font-size:13px}
+.insight{margin:0 0 28px;max-width:80ch}
+section{margin-top:36px}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surf);color:var(--ink);font:500 13px Figtree,sans-serif;cursor:pointer}
+.chip i{width:11px;height:11px;border-radius:50%;display:inline-block}
+.chip[aria-pressed=false]{opacity:.45}
+.chip b{font-weight:600}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--c26);outline-offset:2px}
+.mosaic{position:relative;background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:16px;overflow:hidden}
+canvas{display:block;cursor:pointer}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--on);padding:9px 12px;border-radius:8px;font-size:12.5px;line-height:1.45;min-width:150px;opacity:0;transition:opacity .1s;z-index:5}
+.tip strong{display:block;font-size:14px;margin-bottom:2px}
+.hint{font-size:12.5px;color:var(--mut);margin:8px 2px 0}
+.grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(280px,1fr);gap:28px;align-items:start}
+@media(max-width:860px){.grid{grid-template-columns:1fr}}
+.tools{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 14px;align-items:center}
+input,select{font:500 14px Figtree,sans-serif;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surf);color:var(--ink)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:var(--surf);color:var(--mut);padding:8px 12px;font-size:13px;cursor:pointer;font-weight:500}
+.seg button[aria-pressed=true]{background:var(--acc);color:var(--on)}
+.row{display:grid;grid-template-columns:118px 1fr 40px;gap:10px;align-items:center;width:100%;padding:5px 6px;border:0;border-radius:8px;background:none;color:var(--ink);text-align:left;cursor:pointer;font-size:13.5px}
+.row:hover,.row.on{background:var(--surf);box-shadow:inset 0 0 0 1px var(--line)}
+.row.on{box-shadow:inset 0 0 0 2px var(--acc)}
+.row .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .v{text-align:right;font-variant-numeric:tabular-nums;color:var(--mut)}
+.trk{display:flex;height:18px;border-radius:4px;overflow:hidden;background:repeating-linear-gradient(135deg,var(--c0) 0 4px,transparent 4px 8px)}
+.trk span{display:block;height:100%;transition:width .35s,opacity .2s}
+.panel{position:sticky;top:16px;background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:20px}
+.panel .big{font-size:44px;font-weight:800;line-height:1;margin:6px 0 2px}
+.st{margin:14px 0}
+.st .h{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:4px}
+.st .h b{font-weight:600}
+.bar{height:9px;border-radius:5px;background:var(--line);overflow:hidden}
+.bar span{display:block;height:100%;border-radius:5px;transition:width .35s}
+.panel p{color:var(--mut);margin:14px 0 0;font-size:13.5px}
+.link{background:none;border:0;color:var(--ink);text-decoration:underline;cursor:pointer;padding:0;font-size:13px}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surf)}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{padding:9px 12px;text-align:right;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+th button{all:unset;cursor:pointer;font-weight:600;font-size:13px}
+th button:focus-visible{outline:2px solid var(--c26)}
+tbody tr{cursor:pointer}
+tbody tr:hover{background:var(--bg)}
+tr.on td{background:var(--bg);font-weight:600}
+tfoot td{font-weight:700;border-bottom:0}
+.pb{display:inline-block;width:64px;height:7px;border-radius:4px;background:var(--line);vertical-align:middle;margin-left:8px;overflow:hidden}
+.pb i{display:block;height:100%;background:var(--c26)}
+.foot{margin-top:28px;color:var(--mut);font-size:12.5px;max-width:80ch}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>Jadwal Pilkades 5.311 Desa di Jawa Barat</h1>
+<p class="sub">Sebaran pelaksanaan pemilihan kepala desa 2025–2028 di 19 kabupaten/kota. Data per 29 Oktober 2026.</p>
+<div class="kpis" id="kpis"></div>
+<p class="insight" id="insight"></p>
+</header>
+
+<section>
+<h2>Setiap titik adalah satu desa</h2>
+<p class="sub">Warna menunjukkan tahun pelaksanaan Pilkades. Arahkan kursor atau ketuk titik untuk melihat kabupaten/kotanya; klik untuk memilih.</p>
+<div class="legend" id="legend"></div>
+<div class="mosaic" id="mw"><canvas id="cv" aria-label="Peta titik desa per tahun Pilkades"></canvas><div class="tip" id="tip"></div></div>
+</section>
+
+<section class="grid">
+<div>
+<h2>Perbandingan antar kabupaten/kota</h2>
+<div class="tools">
+<input id="q" type="search" placeholder="Cari kabupaten/kota" aria-label="Cari kabupaten atau kota">
+<select id="srt" aria-label="Urutkan"></select>
+<div class="seg" role="group" aria-label="Skala bar"><button id="m1" aria-pressed="true">Jumlah desa</button><button id="m2" aria-pressed="false">Proporsi</button></div>
+</div>
+<div id="bars"></div>
+</div>
+<aside class="panel" id="panel" aria-live="polite"></aside>
+</section>
+
+<section>
+<h2>Tabel rinci</h2>
+<p class="sub" style="margin-bottom:12px">Klik judul kolom untuk mengurutkan, klik baris untuk memilih.</p>
+<div class="tw"><table id="tb"></table></div>
+</section>
+
+<p class="foot">Sumber: Daftar Desa se-Jawa Barat dan Pelaksanaan Pilkades, diolah dari berbagai pencarian di internet. "Belum terdata" adalah selisih jumlah desa dengan desa yang sudah tercatat jadwalnya, bukan berarti desa tersebut tidak akan menggelar Pilkades.</p>
+</div>
+
+<script>
+const RAW=[["Kab. Garut",421,0,0,0,0],["Kab. Bogor",416,0,0,292,222],["Kab. Cirebon",412,0,0,177,0],["Kab. Sukabumi",381,0,0,240,0],["Kab. Kuningan",361,0,0,198,0],["Kab. Cianjur",354,0,47,0,231],["Kab. Tasikmalaya",351,0,0,216,0],["Kab. Majalengka",330,0,0,141,0],["Kab. Indramayu",309,139,0,0,0],["Kab. Karawang",297,9,67,0,67],["Kab. Bandung",270,0,0,0,0],["Kab. Sumedang",270,0,93,0,0],["Kab. Ciamis",258,0,40,0,0],["Kab. Subang",245,0,165,0,0],["Kab. Purwakarta",183,0,0,0,0],["Kab. Bekasi",179,0,154,0,0],["Kab. Bandung Barat",165,0,0,112,0],["Kab. Pangandaran",93,0,0,0,0],["Kota Banjar",16,0,0,0,0]];
+const D=RAW.map(([n,t,a,b,c,d])=>({n,t,y:[a,b,c,d],s:a+b+c+d,b:t-(a+b+c+d)}));
+const LBL=["2025","2026","2027","2028","Belum terdata"],COL=["--c25","--c26","--c27","--c28","--c0"];
+const fmt=n=>n.toLocaleString("id-ID"),pc=x=>(x*100).toFixed(1).replace(".",",")+"%";
+const $=s=>document.querySelector(s);
+const val=(d,i)=>i<4?d.y[i]:d.b;
+const TOT=LBL.map((_,i)=>D.reduce((a,d)=>a+val(d,i),0)),ALL=D.reduce((a,d)=>a+d.t,0),SCH=ALL-TOT[4];
+let sel=null,hov=null,act=new Set([0,1,2,3,4]),q="",mode="abs",sort={k:"t",d:-1};
+const ACC={n:d=>d.n,t:d=>d.t,s:d=>d.s,b:d=>d.b,p:d=>d.s/d.t,y0:d=>d.y[0],y1:d=>d.y[1],y2:d=>d.y[2],y3:d=>d.y[3]};
+const SORTS=[["t","Jumlah desa"],["s","Desa terjadwal"],["b","Belum terdata"],["p","% terjadwal"],["n","Nama"]];
+$("#srt").innerHTML=SORTS.map(([k,l])=>`<option value="${k}">Urutkan: ${l}</option>`).join("");
+
+/* KPI + insight */
+const peak=TOT.slice(0,4).indexOf(Math.max(...TOT.slice(0,4)));
+$("#kpis").innerHTML=[[fmt(ALL),"desa di 19 kabupaten/kota"],[fmt(SCH),`desa sudah terjadwal (${pc(SCH/ALL)})`],[fmt(TOT[4]),"desa belum terdata jadwalnya"],[LBL[peak],`tahun puncak, ${fmt(TOT[peak])} desa`]].map(([a,b])=>`<div class="kpi"><div class="big">${a}</div><span>${b}</span></div>`).join("");
+const none=D.filter(d=>d.s===0).map(d=>d.n);
+$("#insight").textContent=`${none.length} dari ${D.length} kabupaten/kota belum memiliki jadwal Pilkades yang terdata: ${none.join(", ")}. Wilayah ini menyimpan ${fmt(D.filter(d=>d.s===0).reduce((a,d)=>a+d.t,0))} desa dan menjadi celah informasi terbesar pada data ini.`;
+
+/* Mosaic */
+const kab=[],stt=[];
+D.forEach((d,k)=>{for(let s=0;s<5;s++)for(let j=0;j<val(d,s);j++){kab.push(k);stt.push(s)}});
+const N=kab.length,cv=$("#cv"),ctx=cv.getContext("2d"),mw=$("#mw"),tip=$("#tip");
+let cell=10,cols=1;
+function layout(){const W=mw.clientWidth-32;cell=W<560?6:W<900?8:10;cols=Math.floor(W/cell);const rows=Math.ceil(N/cols),r=devicePixelRatio||1;cv.width=cols*cell*r;cv.height=rows*cell*r;cv.style.width=cols*cell+"px";cv.style.height=rows*cell+"px";ctx.setTransform(r,0,0,r,0,0);draw()}
+function draw(){const cs=getComputedStyle(document.documentElement),cl=COL.map(v=>cs.getPropertyValue(v).trim()),h=hov!=null?hov:sel;ctx.clearRect(0,0,cv.width,cv.height);const r=cell*.38;
+for(let i=0;i<N;i++){let a=act.has(stt[i])?1:.1;if(h!=null&&kab[i]!==h)a*=.2;ctx.globalAlpha=a;ctx.fillStyle=cl[stt[i]];ctx.beginPath();ctx.arc((i%cols+.5)*cell,(Math.floor(i/cols)+.5)*cell,r,0,6.2832);ctx.fill()}ctx.globalAlpha=1}
+function hit(e){const b=cv.getBoundingClientRect(),c=Math.floor((e.clientX-b.left)/cell),r=Math.floor((e.clientY-b.top)/cell),i=r*cols+c;return c>=0&&c<cols&&i>=0&&i<N?kab[i]:null}
+cv.addEventListener("mousemove",e=>{const k=hit(e);if(k!==hov){hov=k;draw();showTip(e)}else if(k!=null)showTip(e)});
+cv.addEventListener("mouseleave",()=>{hov=null;tip.style.opacity=0;draw()});
+cv.addEventListener("click",e=>{const k=hit(e);if(k!=null)pick(k)});
+function showTip(e){if(hov==null){tip.style.opacity=0;return}const d=D[hov],b=mw.getBoundingClientRect();
+tip.innerHTML=`<strong>${d.n}</strong>${fmt(d.t)} desa<br>`+LBL.map((l,i)=>val(d,i)?`${l}: ${fmt(val(d,i))}`:"").filter(Boolean).join("<br>");
+let x=e.clientX-b.left+14,y=e.clientY-b.top+14;if(x>b.width-170)x-=185;tip.style.left=x+"px";tip.style.top=y+"px";tip.style.opacity=1}
+
+/* Legend */
+function renderLegend(){$("#legend").innerHTML=LBL.map((l,i)=>`<button class="chip" data-i="${i}" aria-pressed="${act.has(i)}"><i style="background:var(${COL[i]})"></i>${l} <b>${fmt(TOT[i])}</b></button>`).join("");
+document.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{const i=+b.dataset.i;act.has(i)?act.delete(i):act.add(i);if(!act.size)act=new Set([0,1,2,3,4]);renderAll()})}
+
+/* Rows */
+function rows(){const f=ACC[sort.k];return D.map((d,i)=>({...d,i})).filter(d=>d.n.toLowerCase().includes(q)).sort((a,b)=>{const x=f(a),y=f(b);return(typeof x==="string"?x.localeCompare(y):x-y)*sort.d})}
+function renderBars(){const R=rows(),mx=Math.max(...D.map(d=>d.t));
+$("#bars").innerHTML=R.length?R.map(d=>{const w=mode==="abs"?d.t/mx*100:100;
+return`<button class="row${sel===d.i?" on":""}" data-k="${d.i}"><span class="nm">${d.n}</span><span class="trk" style="width:${w}%">${LBL.map((_,s)=>`<span style="width:${val(d,s)/d.t*100}%;background:var(${COL[s]});opacity:${act.has(s)?1:.15};${s===4?"background:none":""}"></span>`).join("")}</span><span class="v">${fmt(d.t)}</span></button>`}).join(""):"<p class='sub'>Tidak ada hasil.</p>";
+document.querySelectorAll(".row").forEach(b=>{b.onclick=()=>pick(+b.dataset.k);b.onmouseenter=()=>{hov=+b.dataset.k;draw()};b.onmouseleave=()=>{hov=null;draw()}})}
+
+/* Panel */
+function renderPanel(){const d=sel!=null?D[sel]:{n:"Seluruh Jawa Barat",t:ALL,s:SCH,b:TOT[4],y:TOT.slice(0,4)};
+const st=LBL.map((l,i)=>{const v=val(d,i);return`<div class="st"><div class="h"><span>${l}</span><b>${fmt(v)} desa (${pc(v/d.t)})</b></div><div class="bar"><span style="width:${v/d.t*100}%;background:var(${COL[i]})"></span></div></div>`}).join("");
+const pk=Math.max(...d.y);const note=d.s===0?"Belum ada jadwal Pilkades yang terdata untuk wilayah ini.":`${pc(d.s/d.t)} desa sudah terjadwal; pelaksanaan terbanyak pada ${LBL[d.y.indexOf(pk)]} (${fmt(pk)} desa).`;
+$("#panel").innerHTML=`<span class="sub">${sel!=null?"Kabupaten/kota terpilih":"Ringkasan wilayah"}</span><h2>${d.n}</h2><div class="big">${fmt(d.t)}</div><span class="sub">desa</span>${st}<p>${note}</p>${sel!=null?`<p><button class="link" id="clr">Kembali ke seluruh Jawa Barat</button></p>`:""}`;
+const c=$("#clr");if(c)c.onclick=()=>pick(sel)}
+
+/* Table */
+function renderTable(){const H=[["n","Kabupaten/kota"],["t","Jumlah desa"],["y0","2025"],["y1","2026"],["y2","2027"],["y3","2028"],["b","Belum terdata"],["p","% terjadwal"]],R=rows();
+const ar=k=>sort.k===k?(sort.d>0?" ▲":" ▼"):"";
+$("#tb").innerHTML=`<thead><tr>${H.map(([k,l])=>`<th aria-sort="${sort.k===k?(sort.d>0?"ascending":"descending"):"none"}"><button data-s="${k}">${l}${ar(k)}</button></th>`).join("")}</tr></thead><tbody>${R.map(d=>`<tr data-k="${d.i}" class="${sel===d.i?"on":""}"><td>${d.n}</td><td>${fmt(d.t)}</td>${d.y.map(v=>`<td>${v?fmt(v):"–"}</td>`).join("")}<td>${fmt(d.b)}</td><td>${pc(d.s/d.t)}<span class="pb"><i style="width:${d.s/d.t*100}%"></i></span></td></tr>`).join("")}</tbody><tfoot><tr><td>Total</td><td>${fmt(ALL)}</td>${TOT.slice(0,4).map(v=>`<td>${fmt(v)}</td>`).join("")}<td>${fmt(TOT[4])}</td><td>${pc(SCH/ALL)}</td></tr></tfoot>`;
+document.querySelectorAll("#tb th button").forEach(b=>b.onclick=()=>setSort(b.dataset.s));
+document.querySelectorAll("#tb tbody tr").forEach(r=>r.onclick=()=>pick(+r.dataset.k))}
+
+function setSort(k){sort=sort.k===k?{k,d:-sort.d}:{k,d:k==="n"?1:-1};$("#srt").value=k;renderAll()}
+function pick(k){sel=sel===k?null:k;renderAll()}
+function renderAll(){renderLegend();renderBars();renderPanel();renderTable();draw()}
+
+$("#q").oninput=e=>{q=e.target.value.trim().toLowerCase();renderBars();renderTable()};
+$("#srt").onchange=e=>{sort={k:e.target.value,d:e.target.value==="n"?1:-1};renderAll()};
+[["m1","abs"],["m2","pct"]].forEach(([id,m])=>$("#"+id).onclick=()=>{mode=m;$("#m1").setAttribute("aria-pressed",m==="abs");$("#m2").setAttribute("aria-pressed",m==="pct");renderBars()});
+new ResizeObserver(layout).observe(mw);
+matchMedia("(prefers-color-scheme:dark)").addEventListener("change",draw);
+renderAll();layout();
+</script>
+</body>
+</html>
